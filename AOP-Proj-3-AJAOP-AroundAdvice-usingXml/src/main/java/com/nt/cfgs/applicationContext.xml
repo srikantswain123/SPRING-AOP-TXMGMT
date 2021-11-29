@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+<!-- make target class as Spring bean class -->
+<bean id="bankService" class="com.nt.service.BankService"/>
+<!-- make secondary class as spring bean -->
+<bean id="pmAspect" class="com.nt.aspect.PerformanceMonitorAspect"/>
+<bean id="logAspect" class="com.nt.aspect.LogingAsecptMonitor"/>
+<bean id="cashedAspect" class="com.nt.aspect.CashedAspect"/>
+
+
+<!-- enable AOP  -->
+<aop:config>
+<!-- point cuts -->
+<aop:pointcut expression="execution(float com.nt.service.BankService.*(..))" id="poc"/>
+<aop:pointcut expression="execution(float com.nt.service.BankService.compoundIntrest(..))" id="poc1"/>
+<!-- make secondary springbean class as  aspect/advice class -->
+<aop:aspect ref="pmAspect" order="10">
+ <aop:around method="monitor" pointcut-ref="poc"/>
+</aop:aspect>
+
+
+<aop:aspect ref="logAspect" order="5">
+<aop:around method="loging" pointcut-ref="poc1"/>
+</aop:aspect>
+
+<aop:aspect ref="cashedAspect" order="3">
+<aop:around method="cashed" pointcut-ref="poc1"/>
+</aop:aspect>
+
+</aop:config>
+
+</beans>

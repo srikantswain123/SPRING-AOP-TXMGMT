@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+		
+		<!-- make target class as spring bean -->
+		<bean id="service" class="com.nt.service.CarShowRoom"/>
+		
+		<!-- make Secodary class as SpringBean -->
+        <bean id="testDriveAspect" class="com.nt.Aspect.TestDriveAspect"/>
+        
+        <!-- enable Aop -->
+        <aop:config>
+        <!-- <aop:pointcut expression="execution(String com.nt.service.CarShowRoom.sale(..))" id="ptc"/> -->
+        <aop:pointcut expression="execution(String com.nt.service.CarShowRoom.sale(..)) and args(model,price,executive)" id="ptc"/>
+        <!-- make secondary class As Aspect class/Advice Class -->
+        <aop:aspect ref="testDriveAspect">
+        <!-- Configure Advice -->
+        <aop:before method="testDrive" pointcut-ref="ptc"/>
+        </aop:aspect>
+        </aop:config>
+
+</beans>

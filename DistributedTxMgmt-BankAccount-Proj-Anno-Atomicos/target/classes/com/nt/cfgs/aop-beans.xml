@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/jee https://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+		http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+<!-- atomikos transaction Service -->
+<bean id="dtxService" class="com.atomikos.icatch.jta.UserTransactionImp"/>
+
+<!-- atomikos trnsaction mgmt -->
+<bean id="dtxMgmt" class="com.atomikos.icatch.jta.UserTransactionManager"/>
+
+
+<!-- ci=onfugure jta -->
+<bean id="jtaMgmr" class="org.springframework.transaction.jta.JtaTransactionManager">
+ <property name="userTransaction" ref="dtxService"/>
+ <property name="transactionManager" ref="dtxMgmt"/>
+</bean>
+
+<tx:annotation-driven transaction-manager="jtaMgmr"/>
+
+</beans>

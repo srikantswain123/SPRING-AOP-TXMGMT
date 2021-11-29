@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+<!-- cfg target class -->
+<bean id="bankAccount" class="com.nt.service.BankAccount"/>
+
+<!-- cfg advice class -->
+<bean id="moniAdvice" class="com.nt.advice.MonitoringAdvice"/>
+
+
+<!-- cfg proxy factory bean class -->
+<bean id="pfb" class="org.springframework.aop.framework.ProxyFactoryBean">
+<property name="target" ref="bankAccount"/>
+<property name="interceptorNames">
+  <array> <idref bean="moniAdvice"/></array>
+</property>
+</bean>
+</beans>

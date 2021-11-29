@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+<!-- cfg target class as spring bean -->
+<bean id="shopping" class="com.nt.service.Shopping"/>
+<!-- cfg aspect class as spring bean -->
+<bean id="discount" class="com.nt.aspect.Discount"/>
+
+<!-- enable aop -->
+<aop:config>
+<!-- declar point cut on target class method -->
+<aop:pointcut expression="execution(float com.nt.service.Shopping.shop(..))" id="ptc"/>
+
+<!-- make aspect class as advice class -->
+<aop:aspect ref="discount">
+<!-- cfg advice -->
+<aop:after-returning method="cupon" returning="amount" pointcut-ref="ptc"/>
+</aop:aspect>
+</aop:config>
+</beans>
